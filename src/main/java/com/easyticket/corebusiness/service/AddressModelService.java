@@ -3,8 +3,11 @@ package com.easyticket.corebusiness.service;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.easyticket.corebusiness.dto.AddressModelDto;
 import com.easyticket.corebusiness.dto.NewAddressModelRequest;
 import com.easyticket.corebusiness.entity.AddressModel;
 import com.easyticket.corebusiness.repository.AddressModelRepository;
@@ -30,6 +33,14 @@ public class AddressModelService {
 	
 	private String letStringOnlyWithNumbers(String string) {
 		return string.replaceAll("[^0-9]", "");
+	}
+
+	public Page<AddressModelDto> getAllDto(Pageable page){
+		return getAll(page).map(AddressModelDto::new);
+	}
+	
+	private Page<AddressModel> getAll(Pageable page) {
+		return addressModelRepository.findAll(page);
 	}
 	
 	
