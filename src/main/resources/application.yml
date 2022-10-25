@@ -13,5 +13,14 @@ spring:
   flyway:
     baseline-on-migrate: true
     
-    
-      
+  application:
+    name: core-business-ms
+   
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8081/eureka
+  
+server:
+  port: 0  
+
