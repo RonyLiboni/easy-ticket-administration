@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @Target({METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Operation(security = { @SecurityRequirement(name = "bearer-key") },
-	responses = {@ApiResponse(responseCode= "201", description = "The resource was updated with success!")})
+	responses = {@ApiResponse(responseCode= "200", description = "The resource was updated with success!")})
 public @interface PutMappingDocumentation {
 	String summary();
 }

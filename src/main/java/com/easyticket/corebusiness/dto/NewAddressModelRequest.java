@@ -3,6 +3,7 @@ package com.easyticket.corebusiness.dto;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -20,10 +21,12 @@ public class NewAddressModelRequest {
 	@Schema(example = "Ginásio Gigantinho", description = "Here you have to add the name of the place the show will happen.")
 	private String name;
 	@Length(min = 8, max = 9)
+	@NotBlank
 	@Schema(example = "90810-240")
 	private String zipCode;
 	@Min(1)
 	@Max(9999)
+	@NotNull
 	@Schema(example = "891", minimum = "1", maximum = "9999")
 	private Short streetNumber;
 	

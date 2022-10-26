@@ -3,8 +3,12 @@ package com.easyticket.corebusiness.dto;
 import com.easyticket.corebusiness.entity.AddressModel;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class AddressModelDto {
 	
 	private String name;

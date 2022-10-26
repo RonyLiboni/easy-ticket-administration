@@ -1,6 +1,8 @@
 package com.easyticket.corebusiness.exception;
 
-public class ZipCodeNotFoundException extends RuntimeException {
+import javax.persistence.EntityNotFoundException;
+
+public class ZipCodeNotFoundException extends EntityNotFoundException {
 
 	private static final long serialVersionUID = 1L;
 
