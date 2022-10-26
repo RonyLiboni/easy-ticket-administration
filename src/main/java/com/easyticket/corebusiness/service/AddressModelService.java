@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.easyticket.corebusiness.dto.AddressModelDto;
 import com.easyticket.corebusiness.dto.NewAddressModelRequest;
 import com.easyticket.corebusiness.entity.AddressModel;
-import com.easyticket.corebusiness.http.ViaCepAddress;
 import com.easyticket.corebusiness.repository.AddressModelRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -31,8 +30,7 @@ public class AddressModelService {
 
 	private AddressModel fromAddressRequestToEntity(NewAddressModelRequest request) {
 		String zipCode = letStringOnlyWithNumbers(request.getZipCode());
-		ViaCepAddress viaCep = zipCodeService.getViaCepData(zipCode);
-		return request.toEntity(zipCode, viaCep);
+		return request.toEntity(zipCode, zipCodeService.getViaCepData(zipCode));
 	}
 
 	private AddressModel save(AddressModel addressModel) {
@@ -63,6 +61,14 @@ public class AddressModelService {
 		return addressModelRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(String.format("The AddressModel with id '%s' was not found!", id)));
 	}
 	
+	@Transactional
+	public AddressModelDto getById(Long id) {
+		return maper.map(findById(id), AddressModelDto.class);
+	}
 	
+	@Transactional
+	public void deleteById(Long id) {
+		addressModelRepository.delete(findById(id));
+	}
 	
 }

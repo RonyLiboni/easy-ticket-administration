@@ -45,7 +45,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 	
 	@ExceptionHandler(ZipCodeNotFoundException.class)
-	@ApiResponse(responseCode= "400", description = "Resource not found!")
+	@ApiResponse(responseCode= "400", description = "You've made something wrong!")
 	public ResponseEntity<Object> handleZipCodeNotFoundException(ZipCodeNotFoundException exception, WebRequest request) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		Problem body = buildBody(exception.getMessage(), status, ProblemType.OBJECT_WITH_VALIDATION_ERROR);
