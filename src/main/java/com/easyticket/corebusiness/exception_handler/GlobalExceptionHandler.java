@@ -16,6 +16,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.easyticket.corebusiness.exception.ZipCodeNotFoundException;
+
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -36,9 +38,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(EntityNotFoundException.class)
 	@ApiResponse(responseCode= "404", description = "Resource not found!")
-	public ResponseEntity<Object> handleUsernameNotFoundException(EntityNotFoundException exception, WebRequest request) {
+	public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException exception, WebRequest request) {
 		HttpStatus status = HttpStatus.NOT_FOUND;
 		Problem body = buildBody(exception.getMessage(), status, ProblemType.RESOURCE_NOT_FOUND);
+		return handleExceptionInternal(exception, body, new HttpHeaders(), status, request);
+	}
+	
+	@ExceptionHandler(ZipCodeNotFoundException.class)
+	@ApiResponse(responseCode= "400", description = "Resource not found!")
+	public ResponseEntity<Object> handleZipCodeNotFoundException(ZipCodeNotFoundException exception, WebRequest request) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		Problem body = buildBody(exception.getMessage(), status, ProblemType.OBJECT_WITH_VALIDATION_ERROR);
 		return handleExceptionInternal(exception, body, new HttpHeaders(), status, request);
 	}
 	
