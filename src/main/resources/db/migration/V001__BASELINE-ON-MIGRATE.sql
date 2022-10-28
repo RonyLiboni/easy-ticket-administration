@@ -1,0 +1,1 @@
+-- V1 is empty because flyway recognize as v1 the baseline tables that are already set up. ORACLE DB has many tables at baseline.

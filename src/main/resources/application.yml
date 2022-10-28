@@ -1,16 +1,28 @@
 spring:
   datasource:
-    url: jdbc:oracle:thin:@//localhost:1521/xe
+    url: jdbc:oracle:thin:@//localhost:1521/xe?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: system
     password: root
     driver-class-name: oracle.jdbc.OracleDriver
     
   jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
     
   flyway:
     baseline-on-migrate: true
     
-      
+  application:
+    name: core-business-ms
+   
+#eureka:
+#  client:
+ #   serviceUrl:
+  #    defaultZone: http://localhost:8081/eureka
+  
+server:
+  port: 8080  
+  
+
