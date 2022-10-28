@@ -57,7 +57,7 @@ public class AddressModelService {
 		return addressModelDto;
 	}
 
-	private AddressModel findById(Long id) {
+	public AddressModel findById(Long id) {
 		return addressModelRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(String.format("The AddressModel with id '%s' was not found!", id)));
 	}
 	
