@@ -3,14 +3,19 @@ package com.easyticket.corebusiness.service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import com.easyticket.corebusiness.dto.CustomerModelDto;
 import com.easyticket.corebusiness.dto.NewCustomerModelRequest;
 import com.easyticket.corebusiness.entity.CustomerModel;
+import com.easyticket.corebusiness.event.NewCustomerEvent;
 import com.easyticket.corebusiness.repository.CustomerModelRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -18,10 +23,12 @@ import lombok.RequiredArgsConstructor;
 public class CustomerModelService {
 	
 	private final CustomerModelRepository customerModelRepository;
+	private final ApplicationEventPublisher eventPublisher;
 	private final ModelMapper mapper;
 	
 	@Transactional
 	public CustomerModel saveCustomerModel(@Valid NewCustomerModelRequest request) {						
+		eventPublisher.publishEvent(new NewCustomerEvent(request));
 		return save(mapper.map(request, CustomerModel.class));
 	}
 
@@ -45,7 +52,8 @@ public class CustomerModelService {
 	}
 
 	private CustomerModel findById(Long id) {
-		return customerModelRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(String.format("The CustomerModel with id '%s' was not found!", id)));
+		return customerModelRepository.findById(id)
+				.orElseThrow(()-> new EntityNotFoundException(String.format("The CustomerModel with id '%s' was not found!", id)));
 	}
 	
 	@Transactional

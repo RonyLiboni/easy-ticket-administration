@@ -1,4 +1,4 @@
-package com.easyticket.corebusiness.validation;
+package com.easyticket.corebusiness.validation.exist_in_db.should_exist_in_db;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -8,12 +8,12 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Constraint(validatedBy = ExistsInDBValidator.class)
+@Constraint(validatedBy = ShouldExistInDataBaseValidator.class)
 @Target(FIELD)
 @Retention(RUNTIME)
-public @interface ExistsInDB {
+public @interface ShouldExistInDataBase {
 
-    String message() default "The {field} in {entity} doesn't exist";
+    String message() default "The {field} in {entity} should exist in database!";
 
     Class<?>[] groups() default {};
 
