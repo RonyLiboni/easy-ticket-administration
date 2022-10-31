@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import com.easyticket.corebusiness.entity.AddressModel;
-import com.easyticket.corebusiness.http.ViaCepAddress;
+import com.easyticket.corebusiness.http.zipcode_service.ViaCepAddress;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

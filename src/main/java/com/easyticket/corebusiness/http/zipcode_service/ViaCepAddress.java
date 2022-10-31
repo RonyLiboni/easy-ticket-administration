@@ -1,4 +1,4 @@
-package com.easyticket.corebusiness.http;
+package com.easyticket.corebusiness.http.zipcode_service;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

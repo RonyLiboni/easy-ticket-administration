@@ -1,4 +1,4 @@
-package com.easyticket.corebusiness.http;
+package com.easyticket.corebusiness.http.zipcode_service;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

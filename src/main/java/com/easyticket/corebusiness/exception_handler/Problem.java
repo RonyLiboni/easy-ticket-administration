@@ -9,10 +9,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @JsonInclude(Include.NON_NULL)
 @JsonPropertyOrder({"status","type","title","detail","timestamp"})
 @Getter
+@Setter
 @Builder
 public class Problem {
 

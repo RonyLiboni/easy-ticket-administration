@@ -16,6 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.easyticket.corebusiness.exception.RequestToOtherMicroserviceFailedException;
 import com.easyticket.corebusiness.exception.ZipCodeNotFoundException;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -107,6 +108,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		String detail =String.format("The resource '%s', that you tried to access, does not exist!", ex.getRequestURL());
 		Problem body = buildBody(detail, status, ProblemType.RESOURCE_NOT_FOUND);
 		return handleExceptionInternal(ex, body, headers, status, request);
+	}
+	
+	@ExceptionHandler(RequestToOtherMicroserviceFailedException.class)
+	@ApiResponse(responseCode= "400", description = "You've made something wrong!")
+	public ResponseEntity<Object> handleRequestToOtherMicroserviceFailedException(RequestToOtherMicroserviceFailedException exception, WebRequest request) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		Problem body = buildBody(exception.getErrorMessage(), status, ProblemType.REQUEST_TO_OTHER_MICROSERVICE_FAILED);
+		return handleExceptionInternal(exception, body, new HttpHeaders(), status, request);
 	}
 		
 }

@@ -3,8 +3,8 @@ package com.easyticket.corebusiness.service;
 import org.springframework.stereotype.Service;
 
 import com.easyticket.corebusiness.exception.ZipCodeNotFoundException;
-import com.easyticket.corebusiness.http.ViaCepAddress;
-import com.easyticket.corebusiness.http.ZipCodeConsumerFeign;
+import com.easyticket.corebusiness.http.zipcode_service.ViaCepAddress;
+import com.easyticket.corebusiness.http.zipcode_service.ZipCodeConsumerFeign;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
