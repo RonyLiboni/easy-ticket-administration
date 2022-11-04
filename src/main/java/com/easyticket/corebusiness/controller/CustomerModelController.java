@@ -33,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("v1/customers")
+@RequestMapping("admin/v1/customers")
 @Tag(name = "Customer Controller",description = "You will be able to create, read, update and delete a customer in these endpoints.")
 public class CustomerModelController {
 	

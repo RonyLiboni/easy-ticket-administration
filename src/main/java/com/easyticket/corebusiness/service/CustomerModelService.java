@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.easyticket.corebusiness.dto.CustomerModelDto;
 import com.easyticket.corebusiness.dto.NewCustomerModelRequest;
 import com.easyticket.corebusiness.entity.CustomerModel;
+import com.easyticket.corebusiness.event.AdminDeleteCustomerEvent;
 import com.easyticket.corebusiness.event.NewCustomerEvent;
 import com.easyticket.corebusiness.repository.CustomerModelRepository;
 
@@ -63,6 +64,8 @@ public class CustomerModelService {
 	
 	@Transactional
 	public void deleteById(Long id) {
-		customerModelRepository.delete(findById(id));
+		var customerToBeDeleted = findById(id);
+		eventPublisher.publishEvent(new AdminDeleteCustomerEvent(customerToBeDeleted.getEmail()));
+		customerModelRepository.delete(customerToBeDeleted);
 	}
 }

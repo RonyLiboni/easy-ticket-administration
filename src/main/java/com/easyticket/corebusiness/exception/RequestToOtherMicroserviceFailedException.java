@@ -7,10 +7,11 @@ import lombok.Getter;
 public class RequestToOtherMicroserviceFailedException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-	private int status;
 	private String errorMessage;
-		
+	private String detailMessage;
+	
 	public RequestToOtherMicroserviceFailedException(FeignException exception) {
-		this.errorMessage = exception.contentUTF8(); 
+		this.errorMessage = exception.contentUTF8();
+		this.detailMessage = exception.getMessage();
 	}
 }

@@ -114,6 +114,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@ApiResponse(responseCode= "400", description = "You've made something wrong!")
 	public ResponseEntity<Object> handleRequestToOtherMicroserviceFailedException(RequestToOtherMicroserviceFailedException exception, WebRequest request) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
+		if (exception.getErrorMessage() == null || exception.getErrorMessage().equals("") ) {
+			Problem body = buildBody(exception.getDetailMessage(), status, ProblemType.REQUEST_TO_OTHER_MICROSERVICE_FAILED);
+			return handleExceptionInternal(exception, body, new HttpHeaders(), status, request);
+		}
 		Problem body = buildBody(exception.getErrorMessage(), status, ProblemType.REQUEST_TO_OTHER_MICROSERVICE_FAILED);
 		return handleExceptionInternal(exception, body, new HttpHeaders(), status, request);
 	}
