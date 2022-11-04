@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("v1/addresses")
+@RequestMapping("admin/v1/addresses")
 @Tag(name = "Address Controller",description = "You will be able to create, read, update and delete an AddressModel in these endpoints.")
 public class AddressModelController {
 	
