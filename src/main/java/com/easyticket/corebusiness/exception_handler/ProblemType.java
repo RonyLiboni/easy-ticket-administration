@@ -8,7 +8,8 @@ public enum ProblemType {
 	RESOURCE_NOT_FOUND("/resource-not-found", "Resource not found."), 
 	MESSAGE_NOT_READABLE("/message-not-readable","Message not readable."), 
 	INTERNAL_SERVER_ERROR("/internal-server-error","Internal Server Error."), 
-	OBJECT_WITH_VALIDATION_ERROR("/object-validation-error","Object Validation Error."), 
+	OBJECT_WITH_VALIDATION_ERROR("/object-validation-error","Object Validation Error."),
+	INVALID_PARAMETER("/invalid-parameter", "Invalid parameter"),
 	REQUEST_TO_OTHER_MICROSERVICE_FAILED("/request-to-other-microservice-fail","Request with other microservice failed");
 
 	private String title;
