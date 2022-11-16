@@ -22,7 +22,7 @@ public class StorageConfig {
 	private final StorageProperties storageProperties;
 	
 	@Bean
-	@ConditionalOnProperty(name = "storage.tipo", havingValue = "s3")
+	@ConditionalOnProperty(name = "storage.type", havingValue = "s3")
 	public AmazonS3 amazonS3() {
 		var credentials = new BasicAWSCredentials(
 										storageProperties.getS3().getAccessKeyId(), 

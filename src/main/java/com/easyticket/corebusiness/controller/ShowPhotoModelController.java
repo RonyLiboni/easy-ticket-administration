@@ -1,10 +1,8 @@
 package com.easyticket.corebusiness.controller;
 
 import java.util.List;
-
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.easyticket.corebusiness.configuration.documentation.annotations.DeleteMappingDocumentation;
 import com.easyticket.corebusiness.configuration.documentation.annotations.GetMappingDocumentation;
 import com.easyticket.corebusiness.configuration.documentation.annotations.PutMappingDocumentation;
@@ -27,7 +24,6 @@ import com.easyticket.corebusiness.dto.UpdateShowPhotoModelRequest;
 import com.easyticket.corebusiness.entity.ShowPhotoModel;
 import com.easyticket.corebusiness.service.PhotoStorageService.RetrievedPhoto;
 import com.easyticket.corebusiness.service.ShowPhotoModelService;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
