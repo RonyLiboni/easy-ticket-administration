@@ -3,6 +3,8 @@ package com.easyticket.corebusiness.controller;
 import static java.lang.String.format;
 import java.net.URI;
 import javax.validation.Valid;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,6 +23,7 @@ import com.easyticket.corebusiness.configuration.documentation.annotations.PostM
 import com.easyticket.corebusiness.configuration.documentation.annotations.PutMappingDocumentation;
 import com.easyticket.corebusiness.dto.AddressModelDto;
 import com.easyticket.corebusiness.dto.NewAddressModelRequest;
+import com.easyticket.corebusiness.exception.EntityInUseException;
 import com.easyticket.corebusiness.service.AddressModelService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -61,7 +64,12 @@ public class AddressModelController {
 	@DeleteMapping("/{id}")
 	@DeleteMappingDocumentation(summary= "Deletes an Addresses by its Id")
 	public ResponseEntity<?> deleteAnAddressModelById(@PathVariable("id") Long id){
-		addressModelService.deleteById(id);
+		try {
+			addressModelService.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new EntityInUseException(String.format("The Address with id '%s' is in use by other entity.", id));
+		}
+		
 		return ResponseEntity.noContent().build();
 	}
 

@@ -3,18 +3,15 @@ package com.easyticket.corebusiness.service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.easyticket.corebusiness.dto.NewShowModelRequest;
 import com.easyticket.corebusiness.dto.ShowModelDto;
 import com.easyticket.corebusiness.entity.AddressModel;
 import com.easyticket.corebusiness.entity.ShowModel;
 import com.easyticket.corebusiness.repository.ShowModelRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -52,12 +49,13 @@ public class ShowModelService {
 		return mapper.map(showModel, ShowModelDto.class);
 	}
 
-	private ShowModel findById(Long id) {
-		return showModelRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(String.format("The ShowModel with id '%s' was not found!", id)));
+	public ShowModel findById(Long id) {
+		return showModelRepository.findById(id)
+				.orElseThrow(()-> new EntityNotFoundException(String.format("The ShowModel with id '%s' was not found!", id)));
 	}
 	
 	@Transactional
-	public ShowModelDto getById(Long id) {
+	public ShowModelDto getDtoById(Long id) {
 		return mapper.map(findById(id), ShowModelDto.class);
 	}
 	
@@ -65,4 +63,5 @@ public class ShowModelService {
 	public void deleteById(Long id) {
 		showModelRepository.delete(findById(id));
 	}
+
 }
