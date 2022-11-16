@@ -14,16 +14,22 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.easyticket.corebusiness.exception.EntityInUseException;
 import com.easyticket.corebusiness.exception.RequestToOtherMicroserviceFailedException;
+import com.easyticket.corebusiness.exception.StorageException;
 import com.easyticket.corebusiness.exception.ZipCodeNotFoundException;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
@@ -42,6 +48,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	private final MessageSource messageSource;
 	
+	@ExceptionHandler(StorageException.class)
+	@ApiResponse(responseCode= "500", description = "An unexpected error happened in the server side!")
+	public ResponseEntity<Object> handleStorageException(StorageException exception, WebRequest request) {
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		Problem body = buildBody(exception.getMessage(), GENERIC_MESSAGE_FOR_USER, status, ProblemType.FILE_STORAGE_FAILED);
+		return handleExceptionInternal(exception, body, new HttpHeaders(), status, request);
+	}
+	
+	@ExceptionHandler(EntityInUseException.class)
+	@ApiResponse(responseCode= "409", description = "There was a conflict in your request!")
+	public ResponseEntity<Object> handleEntityInUseException(EntityInUseException exception, WebRequest request) {
+		HttpStatus status = HttpStatus.CONFLICT;
+		Problem body = buildBody(exception.getMessage(), null, status, ProblemType.ENTITY_IN_USE);
+		return handleExceptionInternal(exception, body, new HttpHeaders(), status, request);
+	}
+	
 	@ExceptionHandler(RequestToOtherMicroserviceFailedException.class)
 	@ApiResponse(responseCode= "400", description = "You've made something wrong!")
 	public ResponseEntity<Object> handleRequestToOtherMicroserviceFailedException(RequestToOtherMicroserviceFailedException exception, WebRequest request) {
@@ -59,10 +81,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
+	}
+	
+	private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers,
+			HttpStatus status, WebRequest request, BindingResult bindingResult) {
+
 		String detail = "One or more fields are invalid. Please fill the form with valid data and try again.";
-	    
-	    List<ObjectErrorsDto> validationErrors = 
-	    		ex.getBindingResult().getAllErrors().stream()
+		List<ObjectErrorsDto> validationErrors = 
+	    		bindingResult.getAllErrors().stream()
 		    		.map(objectError -> {
 		    			String validatonErrorMessage = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
 		    			String name = objectError.getObjectName();
@@ -73,9 +100,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		    			return new ObjectErrorsDto(name, validatonErrorMessage);
 		    		})
 		    		.collect(Collectors.toList());
-	    
 		Problem body = buildBody(detail, null, status, ProblemType.OBJECT_WITH_VALIDATION_ERROR, validationErrors);
-		return handleExceptionInternal(ex, body, headers, status, request);
+
+	    
+	    return handleExceptionInternal(ex, body, headers, status, request);
 	}
 	
 	@ExceptionHandler(EntityNotFoundException.class)
@@ -86,9 +114,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(exception, body, new HttpHeaders(), status, request);
 	}
 	
-	@ExceptionHandler(ZipCodeNotFoundException.class)
+	@ExceptionHandler({ZipCodeNotFoundException.class, MultipartException.class})
 	@ApiResponse(responseCode= "400", description = "You've made something wrong!")
-	public ResponseEntity<Object> handleZipCodeNotFoundException(ZipCodeNotFoundException exception, WebRequest request) {
+	public ResponseEntity<Object> handleZipCodeNotFoundException(Exception exception, WebRequest request) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		Problem body = buildBody(exception.getMessage(), null, status, ProblemType.OBJECT_WITH_VALIDATION_ERROR);
 		return handleExceptionInternal(exception, body, new HttpHeaders(), status, request);
@@ -215,6 +243,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, body, headers, status, request);
 	}
 	
-
-		
+	@Override
+	protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		return ResponseEntity.status(status).headers(headers).build();
+	}
+	
+	@Override
+	protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
+			WebRequest request) {	
+		return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
+	}
+			
 }

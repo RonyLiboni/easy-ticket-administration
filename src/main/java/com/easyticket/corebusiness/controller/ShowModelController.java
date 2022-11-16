@@ -60,7 +60,7 @@ public class ShowModelController {
 	@GetMapping("/{id}")
 	@GetMappingDocumentation(summary= "Gets an ShowModel by its Id")
 	public ResponseEntity<ShowModelDto> getAnAddressModelById(@PathVariable("id") Long id){
-		return ResponseEntity.ok(showModelService.getById(id));
+		return ResponseEntity.ok(showModelService.getDtoById(id));
 	}
 	
 	@DeleteMapping("/{id}")

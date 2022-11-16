@@ -14,8 +14,9 @@
 	<name>core-business</name>
 	<description>https://github.com/RonyLiboni/easy-ticket-administration</description>
 	<properties>
-		<java.version>19</java.version>
+		<java.version>11</java.version>
 		<spring-cloud.version>2021.0.4</spring-cloud.version>
+		<aws-java-sdk-s3.version>1.11.671</aws-java-sdk-s3.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -30,7 +31,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
+	  	<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>
@@ -74,6 +75,16 @@
 	      <groupId>org.springframework.cloud</groupId>
 	      <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 	    </dependency>
+		<dependency>
+		  <groupId>com.amazonaws</groupId>
+		  <artifactId>aws-java-sdk-s3</artifactId>
+		  <version>${aws-java-sdk-s3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
